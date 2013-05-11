@@ -39,8 +39,9 @@
 #include "src/crypto/prng.h"
 #include "src/network/network.h"
 #include "src/protobufs/transportinstruction.pb.h"
-#include "transportfragment.h"
-#include "transportstate.h"
+#include "src/network/transportfragment.h"
+#include "src/network/transportstate.h"
+#include "src/network/outofband.h"
 
 namespace Network {
 using namespace TransportBuffers;
