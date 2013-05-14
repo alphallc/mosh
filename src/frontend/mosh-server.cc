@@ -735,9 +735,7 @@ static void serve( int host_fd,
 
   bool child_released = false;
 
-  if ( agent.active() ) {
-    agent.attach_oob( network.oob() );
-  }
+  agent.attach_oob(network.oob());
 
   while ( true ) {
     try {
@@ -775,9 +773,7 @@ static void serve( int host_fd,
         sel.add_fd( host_fd );
       }
 
-      if ( agent.active() ) {
-	agent.pre_poll();
-      }
+      network.oob()->pre_poll();
 
       int active_fds = sel.select( timeout );
       if ( active_fds < 0 ) {
@@ -900,7 +896,7 @@ static void serve( int host_fd,
         /* If the pty slave is closed, reading from the master can fail with
            EIO (see #264).  So we treat errors on read() like EOF. */
         if ( bytes_read <= 0 ) {
-          agent.shutdown_server();
+          network.oob()->shutdown();
           network.start_shutdown();
         } else {
           terminal_to_host += terminal.act( string( buf, bytes_read ) );
@@ -933,7 +929,7 @@ static void serve( int host_fd,
       if ( sel.any_signal() || idle_shutdown ) {
         /* shutdown signal */
         if ( network.has_remote_addr() && (!network.shutdown_in_progress()) ) {
-          agent.shutdown_server();
+          network.oob()->shutdown();
           network.start_shutdown();
         } else {
           break;
@@ -977,29 +973,27 @@ static void serve( int host_fd,
         fprintf( stderr,
                  "No connection within %llu seconds.\n",
                  static_cast<unsigned long long>( timeout_if_no_client / 1000 ) );
-        agent.shutdown_server();
+        network.oob()->shutdown();
         break;
       }
 
       if ( agent.active() ) {
         if ( time_since_remote_state > (AGENT_IDLE_TIMEOUT * 1000) || time_since_remote_state > 30000 ) {
-          agent.close_sessions();
+          network.oob()->close_sessions();
         }
-        agent.post_poll();
       }
+      network.oob()->post_poll();
 
       network.tick();
 
-      if ( agent.active() ) {
-        agent.post_tick();
-      }
+      network.oob()->post_tick();
 
     } catch ( const Network::NetworkException &e ) {
       fprintf( stderr, "%s\n", e.what() );
       spin();
     } catch ( const Crypto::CryptoException& e ) {
       if ( e.fatal ) {
-        agent.shutdown_server();
+        network.oob()->shutdown();
         throw;
       } else {
         fprintf( stderr, "Crypto exception: %s\n", e.what() );
