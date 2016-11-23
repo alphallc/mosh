@@ -176,7 +176,7 @@ void TransportSender<MyState>::tick( void )
   }
 
   if ( diff.empty() ) {
-    if ( ( now >= next_ack_time ) ) {
+    if ( ( now >= next_ack_time ) || ( ( now >= next_send_time ) && oob()->has_output() ) ) {
       send_empty_ack();
       mindelay_clock = uint64_t( -1 );
     }
@@ -188,8 +188,6 @@ void TransportSender<MyState>::tick( void )
     /* Send diffs or ack */
     send_to_receiver( diff );
     mindelay_clock = uint64_t( -1 );
-  } else if ( oob()->has_output() && ((now >= next_send_time) || (now >= next_ack_time)) ) {
-    send_empty_ack();
   }
 }
 
