@@ -34,16 +34,16 @@
 */
 
 #include <list>
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+#include <cstdio>
+#include <cstdlib>
+#include <ctime>
 
-#include "fatal_assert.h"
+#include "src/util/fatal_assert.h"
 
-#include "outofband.h"
-#include "oob.pb.h"
+#include "src/network/outofband.h"
+#include "src/protobufs/oob.pb.h"
 
-#include <limits.h>
+#include <climits>
 
 using namespace Network;
 using namespace OutOfBandBuffers;

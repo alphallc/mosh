@@ -38,7 +38,7 @@
 
 #include "src/terminal/parseraction.h"
 #include "src/terminal/terminalframebuffer.h"
-#include "terminaldispatcher.h"
+#include "src/terminal/terminaldispatcher.h"
 
 using namespace Terminal;
 

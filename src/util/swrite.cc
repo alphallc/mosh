@@ -38,7 +38,7 @@
 #include "config.h"
 
 #include <errno.h>
-#include <time.h>
+#include <ctime>
 
 #include "src/util/timestamp.h"
 #include "src/util/swrite.h"

@@ -36,7 +36,7 @@
 #include "src/crypto/byteorder.h"
 #include "src/protobufs/transportinstruction.pb.h"
 #include "src/util/fatal_assert.h"
-#include "transportfragment.h"
+#include "src/network/transportfragment.h"
 
 using namespace Network;
 using namespace TransportBuffers;

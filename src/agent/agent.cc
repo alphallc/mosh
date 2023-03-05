@@ -35,8 +35,8 @@
 
 #include "config.h"
 
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
@@ -54,14 +54,14 @@
 #endif
 #endif
 
-#include "prng.h"
-#include "network.h"
-#include "swrite.h"
-#include "select.h"
-#include "outofband.h"
-#include "agent.h"
-#include "agent.pb.h"
-#include "fatal_assert.h"
+#include "src/crypto/prng.h"
+#include "src/network/network.h"
+#include "src/util/swrite.h"
+#include "src/util/select.h"
+#include "src/network/outofband.h"
+#include "src/agent/agent.h"
+#include "src/protobufs/agent.pb.h"
+#include "src/util/fatal_assert.h"
 
 using namespace Agent;
 using std::string;

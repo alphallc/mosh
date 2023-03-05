@@ -1,0 +1,2 @@
+CompilerFlags:
+  Add: [-I., -I/home/mva/.git_repos/mosh, -I/home/mva/.vcs_repos/mosh, -I/usr/include, -I/usr/lib/gcc/x86_64-pc-linux-gnu/13/include/g++-v13, -isystem]

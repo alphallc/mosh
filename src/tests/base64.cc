@@ -37,14 +37,10 @@
    client and server.  It does not particularly test any code written for
    the Mosh project. */
 
-#include <cstdint>
 #include <cstdlib>
 #include <cstring>
 
-#include "base64_vector.h"
 #include "src/crypto/base64.h"
-#include "src/crypto/crypto.h"
-#include "src/crypto/prng.h"
 #include "src/util/fatal_assert.h"
 // #include "test_utils.h"
 

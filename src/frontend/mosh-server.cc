@@ -81,6 +81,7 @@
 #endif
 
 #include "src/statesync/completeterminal.h"
+#include "src/util/swrite.h"
 #include "src/statesync/user.h"
 #include "src/util/fatal_assert.h"
 #include "src/util/locale_utils.h"
@@ -89,6 +90,7 @@
 #include "src/util/swrite.h"
 #include "src/util/timestamp.h"
 #include "src/agent/agent.h"
+#include "src/util/fatal_assert.h"
 
 #ifndef _PATH_BSHELL
 #define _PATH_BSHELL "/bin/sh"

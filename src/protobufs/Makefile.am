@@ -6,7 +6,7 @@ AM_CXXFLAGS = $(WARNING_CXXFLAGS) $(HARDEN_CFLAGS) $(MISC_CXXFLAGS) $(CODE_COVER
 SUFFIXES = .proto .pb.cc
 
 .proto.pb.cc:
-	$(AM_V_GEN)$(PROTOC) --cpp_out=. -I$(srcdir) $<
+	$(AM_V_GEN)$(PROTOC) --cpp_out=. -I$(srcdir) -I$(top_srcdir) $<
 
 noinst_LIBRARIES = libmoshprotos.a
 

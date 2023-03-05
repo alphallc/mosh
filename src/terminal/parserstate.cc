@@ -32,8 +32,8 @@
 
 #include <memory>
 
-#include "parserstate.h"
-#include "parserstatefamily.h"
+#include "src/terminal/parserstate.h"
+#include "src/terminal/parserstatefamily.h"
 
 using namespace Parser;
 

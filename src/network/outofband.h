@@ -42,7 +42,7 @@
 #include <list>
 #include <map>
 
-#include "oob.pb.h"
+#include "src/protobufs/oob.pb.h"
 
 using std::string;
 using std::queue;
