@@ -155,7 +155,6 @@ void TransportSender<MyState>::tick( void )
   }
 
   /* Determine if a new diff or empty ack needs to be sent */
-
   std::string diff = current_state.diff_from( assumed_receiver_state->state );
 
   attempt_prospective_resend_optimization( diff );

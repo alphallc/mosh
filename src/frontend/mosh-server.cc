@@ -110,7 +110,7 @@ static void serve( int host_fd,
 
 static int run_server( const char *desired_ip,
                        const char *desired_port,
-                       const string &command_path,
+                       const std::string& command_path,
                        char *command_argv[],
                        const int colors,
                        unsigned int verbose,
@@ -261,7 +261,7 @@ int main( int argc, char* argv[] )
 	verbose++;
 	break;
       case 'l':
-	locale_vars.push_back( string( optarg ) );
+	locale_vars.push_back( std::string( optarg ) );
 	break;
       case 'A':
 	with_agent_fwd = true;
@@ -391,10 +391,10 @@ int main( int argc, char* argv[] )
   }
 }
 
-static int run_server( const char *desired_ip,
-                       const char *desired_port,
-                       const string &command_path,
-                       char *command_argv[],
+static int run_server( const char* desired_ip,
+                       const char* desired_port,
+                       const std::string& command_path,
+                       char* command_argv[],
                        const int colors,
                        unsigned int verbose,
                        bool with_motd,
@@ -901,7 +901,7 @@ static void serve( int host_fd,
           network.oob()->shutdown();
           network.start_shutdown();
         } else {
-          terminal_to_host += terminal.act( string( buf, bytes_read ) );
+          terminal_to_host += terminal.act( std::string( buf, bytes_read ) );
 
           /* update client with new state of terminal */
           network.set_current_state( terminal );
