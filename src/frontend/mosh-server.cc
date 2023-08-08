@@ -81,7 +81,6 @@
 #endif
 
 #include "src/statesync/completeterminal.h"
-#include "src/util/swrite.h"
 #include "src/statesync/user.h"
 #include "src/util/fatal_assert.h"
 #include "src/util/locale_utils.h"
@@ -224,52 +223,52 @@ int main( int argc, char* argv[] )
     int opt;
     while ( (opt = getopt( argc - 1, argv + 1, "@:i:p:c:svl:A" )) != -1 ) {
       switch ( opt ) {
-	/*
-	 * This undocumented option does nothing but eat its argument.
-	 * Useful in scripting where you prepend something to a
-	 * mosh-server argv, and might end up with something like
-	 * "mosh-server new -v new -c 256", now you can say
-	 * "mosh-server new -v -@ new -c 256" to discard the second
-	 * "new".
-	 */
+        /*
+         * This undocumented option does nothing but eat its argument.
+         * Useful in scripting where you prepend something to a
+         * mosh-server argv, and might end up with something like
+         * "mosh-server new -v new -c 256", now you can say
+         * "mosh-server new -v -@ new -c 256" to discard the second
+         * "new".
+         */
       case '@':
-	break;
+        break;
       case 'i':
-	desired_ip = optarg;
-	break;
+        desired_ip = optarg;
+        break;
       case 'p':
-	desired_port = optarg;
-	break;
+        desired_port = optarg;
+        break;
       case 's':
-	desired_ip = NULL;
-	desired_ip_str = get_SSH_IP();
-	if ( !desired_ip_str.empty() ) {
-	  desired_ip = desired_ip_str.c_str();
-	  fatal_assert( desired_ip );
-	}
-	break;
+        desired_ip = NULL;
+        desired_ip_str = get_SSH_IP();
+        if ( !desired_ip_str.empty() ) {
+          desired_ip = desired_ip_str.c_str();
+          fatal_assert( desired_ip );
+        }
+        break;
       case 'c':
-	try {
-	  colors = myatoi( optarg );
-	} catch ( const CryptoException& ) {
-	  fprintf( stderr, "%s: Bad number of colors (%s)\n", argv[ 0 ], optarg );
-	  print_usage( stderr, argv[ 0 ] );
-	  exit( 1 );
-	}
-	break;
+        try {
+          colors = myatoi( optarg );
+        } catch ( const CryptoException& ) {
+          fprintf( stderr, "%s: Bad number of colors (%s)\n", argv[ 0 ], optarg );
+          print_usage( stderr, argv[ 0 ] );
+          exit( 1 );
+        }
+        break;
       case 'v':
-	verbose++;
-	break;
+        verbose++;
+        break;
       case 'l':
-	locale_vars.push_back( std::string( optarg ) );
-	break;
+        locale_vars.push_back( std::string( optarg ) );
+        break;
       case 'A':
-	with_agent_fwd = true;
-	break;
+        with_agent_fwd = true;
+        break;
       default:
-	/* don't die on unknown options */
-	print_usage( stderr, argv[ 0 ] );
-	break;
+        /* don't die on unknown options */
+        print_usage( stderr, argv[ 0 ] );
+        break;
       }
     }
   } else if ( argc == 1 ) {
@@ -979,10 +978,8 @@ static void serve( int host_fd,
         break;
       }
 
-      if ( agent.active() ) {
-        if ( time_since_remote_state > (AGENT_IDLE_TIMEOUT * 1000) || time_since_remote_state > 30000 ) {
-          network.oob()->close_sessions();
-        }
+      if ( time_since_remote_state > (AGENT_IDLE_TIMEOUT * 1000) || time_since_remote_state > 30000 ) {
+        network.oob()->close_sessions();
       }
       network.oob()->post_poll();
 

@@ -373,9 +373,9 @@ public:
     return ( width == x.width ) && ( height == x.height ) && ( cursor_col == x.cursor_col )
            && ( cursor_row == x.cursor_row ) && ( cursor_visible == x.cursor_visible )
            && ( reverse_video == x.reverse_video ) && ( renditions == x.renditions )
-           && ( cursor_style == x.cursor_style ) && ( bracketed_paste == x.bracketed_paste )
-           && ( mouse_reporting_mode == x.mouse_reporting_mode ) && ( mouse_focus_event == x.mouse_focus_event )
-           && ( mouse_alternate_scroll == x.mouse_alternate_scroll )
+           && ( cursor_style == x.cursor_style )
+           && ( bracketed_paste == x.bracketed_paste ) && ( mouse_reporting_mode == x.mouse_reporting_mode )
+           && ( mouse_focus_event == x.mouse_focus_event ) && ( mouse_alternate_scroll == x.mouse_alternate_scroll )
            && ( mouse_encoding_mode == x.mouse_encoding_mode );
   }
 };
@@ -483,13 +483,7 @@ public:
   bool is_title_initialized( void ) const { return title_initialized; }
   void set_icon_name( const title_type& s ) { icon_name = s; }
   void set_window_title( const title_type& s ) { window_title = s; }
-  void set_clipboard( const title_type& s )
-  {
-    clipboard = s;
-    // Rolling over 255 -> 0 is okay
-    clipboard_seqnum++;
-  }
-  uint8_t get_clipboard_seqnum( void ) const { return clipboard_seqnum; }
+  void set_clipboard( const title_type& s ) { clipboard = s; clipboard_seqnum++; } // Rolling over 255 -> 0 is okay
   const title_type& get_icon_name( void ) const { return icon_name; }
   const title_type& get_window_title( void ) const { return window_title; }
   const title_type& get_clipboard( void ) const { return clipboard; }
@@ -507,7 +501,8 @@ public:
   bool operator==( const Framebuffer& x ) const
   {
     return ( rows == x.rows ) && ( window_title == x.window_title ) && ( clipboard == x.clipboard )
-           && ( clipboard_seqnum == x.clipboard_seqnum ) && ( bell_count == x.bell_count ) && ( ds == x.ds );
+           && ( clipboard_seqnum == x.clipboard_seqnum )
+           && ( bell_count == x.bell_count ) && ( ds == x.ds );
   }
 };
 }

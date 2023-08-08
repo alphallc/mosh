@@ -62,6 +62,7 @@
 #include "src/util/timestamp.h"
 #include "src/frontend/stmclient.h"
 #include "src/agent/agent.h"
+#include "src/frontend/stmclient.h"
 
 #include "src/network/networktransport-impl.h"
 

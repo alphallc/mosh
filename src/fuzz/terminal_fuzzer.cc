@@ -1,8 +1,8 @@
 #include <cstddef>
 #include <cstdint>
 
-#include "src/terminal/parser.h"
 #include "src/statesync/completeterminal.h"
+#include "src/terminal/parser.h"
 
 extern "C" int LLVMFuzzerTestOneInput( const uint8_t* data, size_t size )
 {
