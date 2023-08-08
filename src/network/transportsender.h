@@ -102,6 +102,8 @@ private:
 
   uint64_t last_heard; /* last time received new state */
 
+  OutOfBand oob_ctl; /* out of band protocol object */
+
   /* chaff to disguise instruction length */
   PRNG prng;
   const std::string make_chaff( void );
@@ -134,10 +136,14 @@ public:
   void start_shutdown( void )
   {
     if ( !shutdown_in_progress ) {
+      oob_ctl.uninit();
       shutdown_start = timestamp();
       shutdown_in_progress = true;
     }
   }
+
+  /* Get refenrece to out of band control object */
+  OutOfBand *oob( void ) { return &oob_ctl; }
 
   /* Misc. getters and setters */
   /* Cannot modify current_state while shutdown in progress */
