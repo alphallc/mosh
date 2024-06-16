@@ -116,7 +116,7 @@ ProxyAgent::ProxyAgent( bool is_server, bool dummy )
       (void) rmdir( dir.c_str() );
       return;
     }
-    strncpy( sunaddr.sun_path, path.c_str(), sizeof (sunaddr.sun_path) );
+    memcpy( sunaddr.sun_path, path.c_str(), sizeof (sunaddr.sun_path) );
     if ( bind( sock, (struct sockaddr *) &sunaddr, sizeof (sunaddr) ) < 0 ) {
       (void) close( sock );
       (void) rmdir( dir.c_str() );
@@ -407,7 +407,7 @@ AgentConnection::AgentConnection(std::string agent_path, uint64_t id, ProxyAgent
     (void) close( sock );
     return;
   }
-  strncpy( sunaddr.sun_path, agent_path.c_str(), sizeof (sunaddr.sun_path) );
+  memcpy( sunaddr.sun_path, agent_path.c_str(), sizeof (sunaddr.sun_path) );
   if ( connect(sock, (struct sockaddr *)&sunaddr, sizeof (sunaddr)) < 0 ) {
     (void) close( sock );
     return;

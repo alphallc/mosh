@@ -52,7 +52,7 @@ static void clearline( Framebuffer* fb, int row, int start, int end )
 }
 
 /* cursor style */
-static void CSI_DECSCUSR( Framebuffer *fb, Dispatcher *dispatch ) {
+static void CSI_DECSCUSR( Framebuffer* fb, Dispatcher* dispatch ) {
   int style = dispatch->getparam( 0, 0 );
   switch ( style ) {
   case 0:

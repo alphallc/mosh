@@ -312,8 +312,8 @@ public:
     MOUSE_REPORTING_ANY_EVENT = 1003
   } mouse_reporting_mode;
 
-  bool mouse_focus_event;      // 1004
-  bool mouse_alternate_scroll; // 1007
+  bool mouse_focus_event;       // 1004
+  bool mouse_alternate_scroll;  // 1007
 
   enum MouseEncodingMode
   {
@@ -367,7 +367,7 @@ public:
 
   DrawState( int s_width, int s_height );
 
-  bool operator==( const DrawState& x ) const
+  bool operator==( const DrawState &x ) const
   {
     /* only compare fields that affect display */
     return ( width == x.width ) && ( height == x.height ) && ( cursor_col == x.cursor_col )
@@ -375,7 +375,7 @@ public:
            && ( reverse_video == x.reverse_video ) && ( renditions == x.renditions )
            && ( cursor_style == x.cursor_style )
            && ( bracketed_paste == x.bracketed_paste ) && ( mouse_reporting_mode == x.mouse_reporting_mode )
-           && ( mouse_focus_event == x.mouse_focus_event ) && ( mouse_alternate_scroll == x.mouse_alternate_scroll )
+           && ( mouse_focus_event == x.mouse_focus_event ) && ( mouse_alternate_scroll == x.mouse_alternate_scroll)
            && ( mouse_encoding_mode == x.mouse_encoding_mode );
   }
 };
@@ -484,6 +484,7 @@ public:
   void set_icon_name( const title_type& s ) { icon_name = s; }
   void set_window_title( const title_type& s ) { window_title = s; }
   void set_clipboard( const title_type& s ) { clipboard = s; clipboard_seqnum++; } // Rolling over 255 -> 0 is okay
+  uint8_t get_clipboard_seqnum ( void ) const { return clipboard_seqnum; }
   const title_type& get_icon_name( void ) const { return icon_name; }
   const title_type& get_window_title( void ) const { return window_title; }
   const title_type& get_clipboard( void ) const { return clipboard; }

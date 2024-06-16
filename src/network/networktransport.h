@@ -41,7 +41,7 @@
 
 #include "src/network/network.h"
 #include "src/network/transportsender.h"
-#include "transportfragment.h"
+#include "src/network/transportfragment.h"
 
 namespace Network {
 template<class MyState, class RemoteState>
@@ -86,6 +86,9 @@ public:
 
   /* Find diff between last receiver state and current remote state, then rationalize states. */
   std::string get_remote_diff( void );
+
+  /* Get refenrece to out of band control object */
+  OutOfBand *oob( void ) { return sender.oob(); }
 
   /* Shut down other side of connection. */
   /* Illegal to change current_state after this. */

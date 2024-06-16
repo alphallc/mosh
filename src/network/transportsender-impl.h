@@ -91,13 +91,14 @@ void TransportSender<MyState>::calculate_timers( void )
     if ( mindelay_clock != uint64_t( -1 ) ) {
       next_send_time = std::max( next_send_time, mindelay_clock + SEND_MINDELAY );
     }
-  } else if ( !(current_state == sent_states.back().state) ) {
+  } else /* splitting line to ease rebasing */
+  if ( !( current_state == sent_states.back().state ) ) {
     if ( mindelay_clock == uint64_t( -1 ) ) {
       mindelay_clock = now;
     }
 
     next_send_time = std::max( mindelay_clock + SEND_MINDELAY, sent_states.back().timestamp + send_interval() );
-  } else if ( ((!(current_state == assumed_receiver_state->state)) || (oob()->has_output())) && (last_heard + ACTIVE_RETRY_TIMEOUT > now) ) {
+  } else if ( ( ( !( current_state == assumed_receiver_state->state ) ) || ( oob()->has_output() ) ) && ( last_heard + ACTIVE_RETRY_TIMEOUT > now ) ) {
     next_send_time = sent_states.back().timestamp + send_interval();
     if ( mindelay_clock != uint64_t( -1 ) ) {
       next_send_time = std::max( next_send_time, mindelay_clock + SEND_MINDELAY );
@@ -155,6 +156,7 @@ void TransportSender<MyState>::tick( void )
   }
 
   /* Determine if a new diff or empty ack needs to be sent */
+
   std::string diff = current_state.diff_from( assumed_receiver_state->state );
 
   attempt_prospective_resend_optimization( diff );

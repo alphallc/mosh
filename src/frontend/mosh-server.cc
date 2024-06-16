@@ -107,10 +107,10 @@ static void serve( int host_fd,
                    long network_signaled_timeout,
                    Agent::ProxyAgent& agent );
 
-static int run_server( const char *desired_ip,
-                       const char *desired_port,
+static int run_server( const char* desired_ip,
+                       const char* desired_port,
                        const std::string& command_path,
-                       char *command_argv[],
+                       char* command_argv[],
                        const int colors,
                        unsigned int verbose,
                        bool with_motd,
@@ -221,54 +221,54 @@ int main( int argc, char* argv[] )
   if ( ( argc >= 2 ) && ( strcmp( argv[1], "new" ) == 0 ) ) {
     /* new option syntax */
     int opt;
-    while ( (opt = getopt( argc - 1, argv + 1, "@:i:p:c:svl:A" )) != -1 ) {
+    while ( ( opt = getopt( argc - 1, argv + 1, "@:i:p:c:svl:A" ) ) != -1 ) {
       switch ( opt ) {
-        /*
-         * This undocumented option does nothing but eat its argument.
-         * Useful in scripting where you prepend something to a
-         * mosh-server argv, and might end up with something like
-         * "mosh-server new -v new -c 256", now you can say
-         * "mosh-server new -v -@ new -c 256" to discard the second
-         * "new".
-         */
-      case '@':
-        break;
-      case 'i':
-        desired_ip = optarg;
-        break;
-      case 'p':
-        desired_port = optarg;
-        break;
-      case 's':
-        desired_ip = NULL;
-        desired_ip_str = get_SSH_IP();
-        if ( !desired_ip_str.empty() ) {
-          desired_ip = desired_ip_str.c_str();
-          fatal_assert( desired_ip );
-        }
-        break;
-      case 'c':
-        try {
-          colors = myatoi( optarg );
-        } catch ( const CryptoException& ) {
-          fprintf( stderr, "%s: Bad number of colors (%s)\n", argv[ 0 ], optarg );
-          print_usage( stderr, argv[ 0 ] );
-          exit( 1 );
-        }
-        break;
-      case 'v':
-        verbose++;
-        break;
-      case 'l':
-        locale_vars.push_back( std::string( optarg ) );
-        break;
-      case 'A':
-        with_agent_fwd = true;
-        break;
-      default:
-        /* don't die on unknown options */
-        print_usage( stderr, argv[ 0 ] );
-        break;
+          /*
+           * This undocumented option does nothing but eat its argument.
+           * Useful in scripting where you prepend something to a
+           * mosh-server argv, and might end up with something like
+           * "mosh-server new -v new -c 256", now you can say
+           * "mosh-server new -v -@ new -c 256" to discard the second
+           * "new".
+           */
+        case '@':
+          break;
+        case 'i':
+          desired_ip = optarg;
+          break;
+        case 'p':
+          desired_port = optarg;
+          break;
+        case 's':
+          desired_ip = NULL;
+          desired_ip_str = get_SSH_IP();
+          if ( !desired_ip_str.empty() ) {
+            desired_ip = desired_ip_str.c_str();
+            fatal_assert( desired_ip );
+          }
+          break;
+        case 'c':
+          try {
+            colors = myatoi( optarg );
+          } catch ( const CryptoException& ) {
+            fprintf( stderr, "%s: Bad number of colors (%s)\n", argv[0], optarg );
+            print_usage( stderr, argv[0] );
+            exit( 1 );
+          }
+          break;
+        case 'v':
+          verbose++;
+          break;
+        case 'l':
+          locale_vars.push_back( std::string( optarg ) );
+          break;
+        case 'A':
+          with_agent_fwd = true;
+          break;
+        default:
+          /* don't die on unknown options */
+          print_usage( stderr, argv[0] );
+          break;
       }
     }
   } else if ( argc == 1 ) {
@@ -397,7 +397,8 @@ static int run_server( const char* desired_ip,
                        const int colors,
                        unsigned int verbose,
                        bool with_motd,
-                       bool with_agent_fwd ) {
+                       bool with_agent_fwd )
+{
   /* get network idle timeout */
   long network_timeout = 0;
   char* timeout_envar = getenv( "MOSH_SERVER_NETWORK_TMOUT" );
@@ -595,8 +596,8 @@ static int run_server( const char* desired_ip,
     /* set SSH_AUTH_SOCK */
     if ( agent.active() ) {
       if ( setenv( "SSH_AUTH_SOCK", agent.listener_path().c_str(), true ) < 0 ) {
-	perror( "setenv" );
-	exit( 1 );
+        perror( "setenv" );
+        exit( 1 );
       }
     }
 
@@ -929,7 +930,7 @@ static void serve( int host_fd,
 
       if ( sel.any_signal() || idle_shutdown ) {
         /* shutdown signal */
-        if ( network.has_remote_addr() && (!network.shutdown_in_progress()) ) {
+        if ( network.has_remote_addr() && ( !network.shutdown_in_progress() ) ) {
           network.oob()->shutdown();
           network.start_shutdown();
         } else {
@@ -987,7 +988,7 @@ static void serve( int host_fd,
 
       network.oob()->post_tick();
 
-    } catch ( const Network::NetworkException &e ) {
+    } catch ( const Network::NetworkException& e ) {
       fprintf( stderr, "%s\n", e.what() );
       spin();
     } catch ( const Crypto::CryptoException& e ) {

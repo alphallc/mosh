@@ -133,25 +133,25 @@ int main( int argc, char* argv[] )
   }
 
   int opt;
-  while ( (opt = getopt( argc, argv, "#:cvA" )) != -1 ) {
+  while ( ( opt = getopt( argc, argv, "#:cvA" ) ) != -1 ) {
     switch ( opt ) {
-    case '#':
-      // Ignore the original arguments to mosh wrapper
-      break;
-    case 'A':
-      forward_agent = true;
-      break;
-    case 'c':
-      print_colorcount();
-      exit( 0 );
-      break;
-    case 'v':
-      verbose++;
-      break;
-    default:
-      print_usage( stderr, argv[ 0 ] );
-      exit( 1 );
-      break;
+      case '#':
+        // Ignore the original arguments to mosh wrapper
+        break;
+      case 'A':
+        forward_agent = true;
+        break;
+      case 'c':
+        print_colorcount();
+        exit( 0 );
+        break;
+      case 'v':
+        verbose++;
+        break;
+      default:
+        print_usage( stderr, argv[0] );
+        exit( 1 );
+        break;
     }
   }
 
