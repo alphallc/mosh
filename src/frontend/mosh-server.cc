@@ -114,7 +114,9 @@ static int run_server( const char* desired_ip,
                        const int colors,
                        unsigned int verbose,
                        bool with_motd,
-                       bool with_agent_fwd );
+                       bool foreground,
+                       bool with_agent_fwd
+                     );
 
 static void print_version( FILE* file )
 {
@@ -129,7 +131,7 @@ static void print_version( FILE* file )
 static void print_usage( FILE* stream, const char* argv0 )
 {
   fprintf( stream,
-           "Usage: %s new [-s] [-v] [-i LOCALADDR] [-p PORT[:PORT2]] [-c COLORS] [-l NAME=VALUE] [-- COMMAND...]\n",
+           "Usage: %s new [-D] [-s] [-v] [-i LOCALADDR] [-p PORT[:PORT2]] [-c COLORS] [-l NAME=VALUE] [-- COMMAND...]\n",
            argv0 );
 }
 
@@ -193,6 +195,7 @@ int main( int argc, char* argv[] )
   std::string command_path;
   char** command_argv = NULL;
   int colors = 0;
+  bool foreground = false; /* stay in the foreground, don't fork into background */
   bool with_agent_fwd = false;
   unsigned int verbose = 0; /* don't close stdin/stdout/stderr */
   /* Will cause mosh-server not to correctly detach on old versions of sshd. */
@@ -221,7 +224,7 @@ int main( int argc, char* argv[] )
   if ( ( argc >= 2 ) && ( strcmp( argv[1], "new" ) == 0 ) ) {
     /* new option syntax */
     int opt;
-    while ( ( opt = getopt( argc - 1, argv + 1, "@:i:p:c:svl:A" ) ) != -1 ) {
+    while ( ( opt = getopt( argc - 1, argv + 1, "@:i:p:c:svl:AD" ) ) != -1 ) {
       switch ( opt ) {
           /*
            * This undocumented option does nothing but eat its argument.
@@ -261,6 +264,9 @@ int main( int argc, char* argv[] )
           break;
         case 'l':
           locale_vars.push_back( std::string( optarg ) );
+          break;
+        case 'D':
+          foreground = true;
           break;
         case 'A':
           with_agent_fwd = true;
@@ -380,7 +386,7 @@ int main( int argc, char* argv[] )
   }
 
   try {
-    return run_server( desired_ip, desired_port, command_path, command_argv, colors, verbose, with_motd, with_agent_fwd );
+    return run_server( desired_ip, desired_port, command_path, command_argv, colors, verbose, with_motd, foreground, with_agent_fwd );
   } catch ( const Network::NetworkException& e ) {
     fprintf( stderr, "Network exception: %s\n", e.what() );
     return 1;
@@ -397,7 +403,9 @@ static int run_server( const char* desired_ip,
                        const int colors,
                        unsigned int verbose,
                        bool with_motd,
-                       bool with_agent_fwd )
+                       bool foreground,
+                       bool with_agent_fwd
+                     )
 {
   /* get network idle timeout */
   long network_timeout = 0;
@@ -466,12 +474,15 @@ static int run_server( const char* desired_ip,
   fatal_assert( 0 == sigaction( SIGHUP, &sa, NULL ) );
   fatal_assert( 0 == sigaction( SIGPIPE, &sa, NULL ) );
 
-  /* detach from terminal */
-  fflush( NULL );
-  pid_t the_pid = fork();
-  if ( the_pid < 0 ) {
+  pid_t the_pid = -1;
+  if ( !foreground )
+    /* detach from terminal */
+    fflush( NULL );
+    the_pid = fork();
+  }
+  if ( the_pid < 0 && !foreground ) {
     perror( "fork" );
-  } else if ( the_pid > 0 ) {
+  } else if ( the_pid > 0 || foreground ) {
     fputs( "\nmosh-server (" PACKAGE_STRING ") [build " BUILD_VERSION "]\n"
            "Copyright 2012 Keith Winstein <mosh-devel@mit.edu>\n"
            "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.\n"
@@ -479,7 +490,9 @@ static int run_server( const char* desired_ip,
            "There is NO WARRANTY, to the extent permitted by law.\n\n",
            stderr );
 
-    fprintf( stderr, "[mosh-server detached, pid = %d]\n", static_cast<int>( the_pid ) );
+    if ( !foreground ) {
+      fprintf( stderr, "[mosh-server detached, pid = %d]\n", static_cast<int>( the_pid ) );
+    }
 #ifndef HAVE_IUTF8
     fputs( "\nWarning: termios IUTF8 flag not defined.\n"
            "Character-erase of multibyte character sequence\n"
@@ -487,14 +500,16 @@ static int run_server( const char* desired_ip,
            stderr );
 #endif /* HAVE_IUTF8 */
 
-    fflush( NULL );
-    if ( isatty( STDOUT_FILENO ) ) {
-      tcdrain( STDOUT_FILENO );
+    if ( !foreground ) {
+      fflush( NULL );
+      if ( isatty( STDOUT_FILENO ) ) {
+        tcdrain( STDOUT_FILENO );
+      }
+      if ( isatty( STDERR_FILENO ) ) {
+        tcdrain( STDERR_FILENO );
+      }
+      exit( 0 );
     }
-    if ( isatty( STDERR_FILENO ) ) {
-      tcdrain( STDERR_FILENO );
-    }
-    exit( 0 );
   }
 
   /* initialize agent listener if requested */
