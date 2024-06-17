@@ -613,6 +613,12 @@ static int run_server( const char* desired_ip,
       exit( 1 );
     }
 
+    /* clear stale SSH_TTY environment variable */
+    if ( unsetenv( "SSH_TTY" ) < 0 ) {
+      perror( "unsetenv" );
+      exit( 1 );
+    }
+￼
     chdir_homedir();
 
     if ( with_motd && ( !motd_hushed() ) ) {
