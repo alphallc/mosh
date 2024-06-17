@@ -131,7 +131,7 @@ static void print_version( FILE* file )
 static void print_usage( FILE* stream, const char* argv0 )
 {
   fprintf( stream,
-           "Usage: %s new [-D] [-s] [-v] [-i LOCALADDR] [-p PORT[:PORT2]] [-c COLORS] [-l NAME=VALUE] [-- COMMAND...]\n",
+           "Usage: %s new [-A] [-D] [-s] [-v] [-i LOCALADDR] [-p PORT[:PORT2]] [-c COLORS] [-l NAME=VALUE] [-- COMMAND...]\n",
            argv0 );
 }
 
@@ -475,7 +475,7 @@ static int run_server( const char* desired_ip,
   fatal_assert( 0 == sigaction( SIGPIPE, &sa, NULL ) );
 
   pid_t the_pid = -1;
-  if ( !foreground )
+  if ( !foreground ) {
     /* detach from terminal */
     fflush( NULL );
     the_pid = fork();
@@ -633,7 +633,7 @@ static int run_server( const char* desired_ip,
       perror( "unsetenv" );
       exit( 1 );
     }
-￼
+
     chdir_homedir();
 
     if ( with_motd && ( !motd_hushed() ) ) {
