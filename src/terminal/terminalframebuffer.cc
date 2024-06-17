@@ -74,6 +74,7 @@ DrawState::DrawState( int s_width, int s_height )
 
 Framebuffer::Framebuffer( int s_width, int s_height )
   : rows(), icon_name(), window_title(), clipboard(), bell_count( 0 ), title_initialized( false ),
+    notification(), sendfile(),
     clipboard_seqnum( 0 ),
     ds( s_width, s_height )
 {
@@ -87,6 +88,7 @@ Framebuffer::Framebuffer( int s_width, int s_height )
 Framebuffer::Framebuffer( const Framebuffer& other )
   : rows( other.rows ), icon_name( other.icon_name ), window_title( other.window_title ),
     clipboard( other.clipboard ), bell_count( other.bell_count ), title_initialized( other.title_initialized ),
+    notification( other.notification ), sendfile( other.sendfile ),
     clipboard_seqnum( other.clipboard_seqnum ),
     ds( other.ds )
 {}
@@ -100,6 +102,8 @@ Framebuffer& Framebuffer::operator=( const Framebuffer& other )
     clipboard = other.clipboard;
     bell_count = other.bell_count;
     title_initialized = other.title_initialized;
+    notification = other.notification;
+    sendfile = other.sendfile;
     clipboard_seqnum = other.clipboard_seqnum;
     ds = other.ds;
   }
@@ -382,6 +386,8 @@ void Framebuffer::reset( void )
   ds = DrawState( width, height );
   rows = rows_type( height, newrow() );
   window_title.clear();
+  notification.clear();
+  sendfile.clear();
   clipboard.clear();
   clipboard_seqnum = 0;
   /* do not reset bell_count */

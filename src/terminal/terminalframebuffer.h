@@ -406,6 +406,8 @@ private:
   title_type clipboard;
   unsigned int bell_count;
   bool title_initialized; /* true if the window title has been set via an OSC */
+  title_type notification;
+  title_type sendfile;
   uint8_t clipboard_seqnum;
 
   row_pointer newrow( void )
@@ -484,10 +486,14 @@ public:
   void set_icon_name( const title_type& s ) { icon_name = s; }
   void set_window_title( const title_type& s ) { window_title = s; }
   void set_clipboard( const title_type& s ) { clipboard = s; clipboard_seqnum++; } // Rolling over 255 -> 0 is okay
+  void set_notification( const title_type &s ) { notification = s; }
+  void set_sendfile( const title_type &s ) { sendfile = s; }
   uint8_t get_clipboard_seqnum ( void ) const { return clipboard_seqnum; }
   const title_type& get_icon_name( void ) const { return icon_name; }
   const title_type& get_window_title( void ) const { return window_title; }
   const title_type& get_clipboard( void ) const { return clipboard; }
+  const title_type & get_notification( void ) const { return notification; }
+  const title_type & get_sendfile( void ) const { return sendfile; }
 
   void prefix_window_title( const title_type& s );
 
@@ -502,6 +508,7 @@ public:
   bool operator==( const Framebuffer& x ) const
   {
     return ( rows == x.rows ) && ( window_title == x.window_title ) && ( clipboard == x.clipboard )
+           && ( notification == x.notification ) && ( sendfile == x.sendfile )
            && ( clipboard_seqnum == x.clipboard_seqnum )
            && ( bell_count == x.bell_count ) && ( ds == x.ds );
   }
