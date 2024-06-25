@@ -114,7 +114,7 @@ Display::Display( bool use_environment )
        have reliable information on this, so we hardcode a whitelist of
        terminal type prefixes. */
     static const char* const title_term_types[]
-      = { "xterm", "rxvt", "kterm", "Eterm", "alacritty", "screen", "tmux" };
+      = { "xterm", "rxvt", "kterm", "konsole", "Eterm", "alacritty", "screen", "tmux" };
 
     has_title = false;
     const char* term_type = getenv( "TERM" );
