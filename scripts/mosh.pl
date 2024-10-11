@@ -34,7 +34,7 @@ use 5.8.8;
 
 use warnings;
 use strict;
-use Getopt::Long;
+use Getopt::Long qw( :config no_ignore_case );
 use IO::Socket;
 use Text::ParseWords;
 use Socket qw(IPPROTO_TCP);
